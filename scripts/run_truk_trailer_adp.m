@@ -186,9 +186,9 @@ for jj = 1:numel(ts1)
     im = frame2im(frame);
     [imind,cm] = rgb2ind(im,256);
     if jj == 1
-        imwrite(imind,cm,filename,'gif', 'Loopcount',inf);
+        imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime',0.03);
     else
-        imwrite(imind,cm,filename,'gif','WriteMode','append');
+        imwrite(imind,cm,filename,'gif','WriteMode','append', 'DelayTime',0.03);
     end
 end
 %close(v)

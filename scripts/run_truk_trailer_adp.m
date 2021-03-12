@@ -172,14 +172,24 @@ ys2 =ys;
 %% Parallel plot
 %v = VideoWriter('newfile.mp4','MPEG-4');
 %open(v)
+h = figure(101);
+%axis tight manual % this ensures that getframe() returns a consistent size
+filename = 'learningViaADP.gif';
 for jj = 1:numel(ts1)
-    tp1.updateFig(ys1(jj,:))    
+    tp1.updateFig(ys1(jj,:))
     if jj <= numel(ts2)
         tp2.updateFig(ys2(jj,:))
-    end    
+    end
     drawnow
- %   frame = getframe(gcf);
- %   writeVideo(v,frame);
+    % Write to the GIF File
+    frame = getframe(h);
+    im = frame2im(frame);
+    [imind,cm] = rgb2ind(im,256);
+    if jj == 1
+        imwrite(imind,cm,filename,'gif', 'Loopcount',inf);
+    else
+        imwrite(imind,cm,filename,'gif','WriteMode','append');
+    end
 end
 %close(v)
 

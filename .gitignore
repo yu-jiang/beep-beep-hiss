@@ -1,3 +1,9 @@
+# MATLAB extension
+*.asv
+*.mp4
+*.avi
+*.slxc
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

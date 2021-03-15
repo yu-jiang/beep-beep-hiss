@@ -4,8 +4,8 @@ p.noiseLevel = 0.01;
 p.trailerWheelbase = 11;
 forwardTarget = [20 2 0.3];
 
-%ic = [0 3 0 0];
-ic = [0 1 -0.2 0.3];
+ic = [0 3 0 0];
+%ic = [0 1 -0.2 0.3];
 
 % compute optimal gain
 A = [  0    -1     0;
@@ -63,7 +63,7 @@ ts1 = ts;
 ys1 = ys;
 
 %% With Control-based planning
-numPullups = 1;
+numPullups = 3;
 
 tsave = 0;
 ysave = ic;
@@ -114,11 +114,11 @@ for jj = 1:numel(ts1)
     % Write to the GIF File
     frame = getframe(h);
     im = frame2im(frame);
-    [imind,cm] = rgb2ind(im,256);
+    [imind,cm] = rgb2ind(im,256,'nodither');
     if jj == 1
         imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime',0.5);
-    else
-        imwrite(imind,cm,filename,'gif','WriteMode','append', 'DelayTime',0.1);
+    elseif floor(jj/2) == jj/2
+        imwrite(imind,cm,filename,'gif','WriteMode','append', 'DelayTime',0.05);
     end
 end
 %close(v)

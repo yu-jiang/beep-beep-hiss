@@ -78,11 +78,11 @@ for jj = 1:numel(Ts{ct})+20
     if create_gif == 1
         frame = getframe(h);
         im = frame2im(frame);
-        [imind,cm] = rgb2ind(im,256);
+        [imind,cm] = rgb2ind(im,256,'nodither');
         if jj == 1
-            imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime',2);
-        else
-            imwrite(imind,cm,filename,'gif','WriteMode','append', 'DelayTime',0.05);
+            imwrite(imind, cm, filename, 'gif', 'Loopcount', inf, 'DelayTime',2);
+        elseif floor(jj/4) == jj/4
+            imwrite(imind, cm, filename, 'gif', 'WriteMode', 'append', 'DelayTime',0.1);
         end
     end
 end

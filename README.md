@@ -4,4 +4,11 @@ Beep-Beep-Hiss is an open-source project for academia use. The goal is to collec
 
 Toolkit for truck and trailer parking
 
+## ADP-based learning control
+
 ![](./misc/learningViaADP.gif)
+
+## Control-based planning
+
+![](./misc/controlBasedPlanning.gif)
+

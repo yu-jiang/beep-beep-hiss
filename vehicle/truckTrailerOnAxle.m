@@ -1,4 +1,4 @@
-classdef truck_trailer_on_axle < handle
+classdef truckTrailerOnAxle < handle
     % truck and trailer model where the fifth wheel is at the rear center
     % of the truck, and it is also the reference point of the model.    
     properties
@@ -27,7 +27,7 @@ classdef truck_trailer_on_axle < handle
     end
     
     methods
-        function self = truck_trailer_on_axle()
+        function self = truckTrailerOnAxle()
         end
         
         function set_state(self, xyhg)

@@ -5,13 +5,13 @@ p.trailerWheelbase = 11;
 forwardTarget = [20 2 0.3];
 
 % compute optimal gain
-A = [  0    -1     0;
-       0     0     0;
-       0     0    1/p.trailerWheelbase];
-B = [0;
-    -1/p.truckWheelbase;
-    1/p.truckWheelbase];
-p.feedbackGain = lqr(A, B, p.Q, p.R);
+% A = [  0     1     0;
+%        0     0     0;
+%        0     0    1/p.trailerWheelbase];
+% B = [0;
+%     -1/p.truckWheelbase;
+%     1/p.truckWheelbase];
+% p.feedbackGain = lqr(A, B, p.Q, p.R);
 t = gen_forward_fix_traj(p, [0 1 0 0], 20);
 
 figure(102)

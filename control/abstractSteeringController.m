@@ -5,7 +5,7 @@ classdef (Abstract) abstractSteeringController < handle
     
     methods
         function y = getSteeringCommand(self)
-            y = self.controlSig;
+            y = rad2deg(self.controlSig);
         end
     end
 

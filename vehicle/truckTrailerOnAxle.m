@@ -37,25 +37,53 @@ classdef truckTrailerOnAxle < handle
             self.g_rad = xyhg(4);
         end
         
-        function set_input(self, swa_deg)
+        function set_steering(self, swa_deg)
             swa_deg = min(swa_deg,  self.maxSteeringDeg);
             swa_deg = max(swa_deg, -self.maxSteeringDeg);
             self.s_deg = swa_deg;
         end
         
         function swa = get_steering_angle(self)
-            swa = deg2rad(self.s_deg);
+            swa = self.s_deg;
+        end
+        
+        function swa = get_steering_angle_rad(self)
+            swa = get_steering_angle(self);
+            swa = deg2rad(swa);
+        end
+        
+        function v = get_velocity(self)
+            v = self.v_mps;
+        end
+        
+        function set_speed(self, v)
+            self.v_mps = v;
         end
         
         function state = get_state(self)
             state = [self.x_m; self.y_m; self.h_rad; self.g_rad];
         end
         
+        function [A, B] = get_forward_AB(self)
+            A = [0 1  0;
+                 0 0  0;
+                 0 0  -1/self.trailerWheelbase];
+            B = [0;
+                1/self.truckWheelbase;
+                -1/self.truckWheelbase];
+        end
+        
+        function [A, B] = get_reverse_AB(self)
+            [A, B] = get_forward_AB(self);
+            A = -A;
+            B = -B;
+        end
+        
         function drive(self, dt)
             if nargin < 2
                 dt = 0.1;
             end
-            swa = self.get_steering_angle();
+            swa = self.get_steering_angle_rad();
             d_state = [cos(self.h_rad);
                 sin(self.h_rad);
                 tan(swa)/self.truckWheelbase;

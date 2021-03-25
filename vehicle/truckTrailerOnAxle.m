@@ -9,6 +9,7 @@ classdef truckTrailerOnAxle < handle
         
         % Dynamics
         v_mps              = 1;
+        gear
         x_m                = 0;
         y_m                = 0;
         h_rad              = 0;

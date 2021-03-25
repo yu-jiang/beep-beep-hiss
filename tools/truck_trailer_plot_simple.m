@@ -13,6 +13,7 @@ classdef truck_trailer_plot_simple < handle
         x = 0
         y = 0
         h = 0
+        sa = 0
         g = 0
         t = 0
         params
@@ -38,10 +39,10 @@ classdef truck_trailer_plot_simple < handle
                 self.ax = ax;
             end
              
-            [x1,y1] = local_get_truck_points(self.x, self.y, self.h, params);
-            [x2,y2] = local_get_trailer_points(self.x, self.y, self.h, self.g, params);
-            [xfl, yfl, xfr, yfr] = local_get_tire_points(self.t, ...
-                self.x, self.y, self.h, self.g, params);
+            [x1,y1] = local_get_truck_points(self.x, self.y, self.h, self.params);
+            [x2,y2] = local_get_trailer_points(self.x, self.y, self.h, self.g, self.params);
+            [xfl, yfl, xfr, yfr] = local_get_tire_points( ...
+                self.x, self.y, self.h, self.sa, self.params);
             
             self.truckShape   = polyshape(x1, y1);
             self.trailerShape = polyshape(x2, y2);
@@ -95,8 +96,8 @@ classdef truck_trailer_plot_simple < handle
             grid on
         end
         
-        function updateFig(self, xyhp, t)
-            if nargin < 3
+        function updateFig(self, xyhp, sa_deg, t)
+            if nargin < 4
                 t = 0;
             end
             
@@ -104,12 +105,13 @@ classdef truck_trailer_plot_simple < handle
             self.y = xyhp(2);
             self.h = xyhp(3);
             self.g = xyhp(4);
+            self.sa = sa_deg;
             self.t = t;
             
             [x1,y1] = local_get_truck_points(self.x, self.y, self.h, self.params);
             [x2,y2] = local_get_trailer_points(self.x, self.y, self.h, self.g, self.params);
-            [flxx, flyy, frxx, fryy] = local_get_tire_points(self.t, ...
-                self.x, self.y, self.h, self.g, self.params);            
+            [flxx, flyy, frxx, fryy] = local_get_tire_points( ...
+                self.x, self.y, self.h, self.sa, self.params);            
             
             self.truckPlot.Shape.Vertices = [x1 y1];
             self.trailerPlot.Shape.Vertices = [x2 y2];
@@ -133,14 +135,18 @@ classdef truck_trailer_plot_simple < handle
 end
 
 %%
-function [flxx, flyy, frxx, fryy] = local_get_tire_points(t,x, y, h, g, p)
-[usat, ~] = steering_controller(t, x, y, h, g, p);
+function [flxx, flyy, frxx, fryy] = local_get_tire_points(x, y, h, sa, p)
+
+MAX_STEERING_DEG = 25;
+
+sa   = max(sa, -MAX_STEERING_DEG);
+sa   = min(sa, MAX_STEERING_DEG);
+swa = deg2rad(sa);
 
 h = h + pi/2;
 tmp_y = y;
 y = x;
 x = -tmp_y;
-swa = atan(usat);
 
 % Front left
 x0 = [-p.tireLen/2 -p.tireLen/2 p.tireLen/2 p.tireLen/2]';

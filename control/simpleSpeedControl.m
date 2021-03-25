@@ -12,7 +12,7 @@ classdef simpleSpeedControl < handle
              xyhg            = self.vehicle.get_state();
              currentVelociy  = self.vehicle.get_velocity();
              dxyh = compute_tracking_err_at_target(xyhg(1:3), waypoint(1:3));    
-             if (dxyh(1) > 0 && currentVelociy>0) || (dxyh(1) <0 && currentVelociy<0)
+             if (dxyh(1) > 0 && currentVelociy>=0) || (dxyh(1) <0 && currentVelociy<=0)
                  vm = 0;
              else
                  vm = 1;

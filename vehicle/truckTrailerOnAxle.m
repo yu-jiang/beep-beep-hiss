@@ -8,14 +8,13 @@ classdef truckTrailerOnAxle < handle
         trailerWheelbase   = 11.0;
         
         % Dynamics
-        v_mps              = 1;
-        gear
+        spd_mps            = 1;
         x_m                = 0;
         y_m                = 0;
         h_rad              = 0;
         g_rad              = 0; 
         s_deg              = 0; % Steering angle  
-        shifting           = 1;
+        shifting           = 0;
         
         % Visualization
         truckWidth         = 3;
@@ -27,8 +26,20 @@ classdef truckTrailerOnAxle < handle
         tireWidth          = 0.3;       
     end
     
+    properties (Dependent)
+        v_mps
+    end
+    
     methods
         function self = truckTrailerOnAxle()
+        end
+        
+        function val = get.v_mps(self)
+            if self.shifting == 0
+                val = 0;
+            else
+                val = self.spd_mps * sign(self.shifting);
+            end
         end
         
         function set_state(self, xyhg)
@@ -52,13 +63,17 @@ classdef truckTrailerOnAxle < handle
             swa = get_steering_angle(self);
             swa = deg2rad(swa);
         end
-        
-        function v = get_velocity(self)
-            v = self.v_mps;
+      
+        function set_speed(self, spd)
+            self.spd_mps = abs(spd);
         end
         
-        function set_speed(self, v)
-            self.v_mps = v;
+        function set_shift(self, gear)
+            if gear == 1 || gear == -1 || gear == 0
+                self.shifting = gear;
+            else
+                warning('Wrong gear value')
+            end
         end
         
         function state = get_state(self)

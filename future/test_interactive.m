@@ -16,3 +16,12 @@ ct = controlTask(vehicle, ...
     steeringController, ...
     termCond);
 
+xsave = zeros(0,6);
+
+while ct.tasksStatus == 1
+    ct.execute()
+    
+    xx = [ct.vehicle.get_state()' ct.vehicle.get_steering_angle() ct.vehicle.v_mps];
+    xsave = [xsave; xx];
+end
+

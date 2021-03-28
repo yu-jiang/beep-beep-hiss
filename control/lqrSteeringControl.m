@@ -13,21 +13,22 @@ classdef lqrSteeringControl < abstractSteeringController
     end
     
     methods
-        function self = lqrSteeringControl(vehicle)
-            self.vehicle = vehicle;
-            [self.A, self.B] = vehicle.get_forward_AB();
+        function self = lqrSteeringControl(A, B)
+            self.A = A;
+            self.B = B;
+            reset(self);
         end
         
         function reset(self)
             self.K = lqr(self.A, self.B, self.Q, self.R);
         end
                 
-        function y = compute(self, waypoint)
-            xyhg = self.vehicle.get_state();
+        function y = compute(self, ego_state, waypoint)
+            xyhg = ego_state;
             dxyh = compute_tracking_err_at_target(xyhg(1:3), waypoint(1:3));
             dg   = xyhg(4) - waypoint(4);
             self.err = [dxyh; dg];
-            self.controlSig = -self.K * self.err(2:4);
+            self.controlSig = -self.K * self.err(2:4) + waypoint(6);
             y = self.getSteeringCommand();
         end
         

@@ -3,6 +3,7 @@
 *.mp4
 *.avi
 *.slxc
+getMapBoxToken.m
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
